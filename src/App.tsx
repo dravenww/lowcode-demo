@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect } from 'react';
+import { init } from '@alilc/lowcode-engine';
+import { initPlugin } from "./plugins/init";
+
 import './App.css';
 
+const lowCodeId = 'lowCode-container';
+const initApp = async () => {
+  await initPlugin();
+  await init(document.getElementById(lowCodeId)!, {
+    enableCondition: true,
+    enableCanvasLock: true,
+    supportVariableGlobally: true,
+    device: 'default',
+    locale: 'zh_CN',
+    renderEnv: 'react',
+    requestHandlersMap: {
+      // fetch: {}, // todo fetch
+    },
+  });
+}
+
 function App() {
+  useEffect(() => {
+    initApp().then(() => {
+      console.log('init');
+    });
+  });
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div id={lowCodeId}>
     </div>
   );
 }
